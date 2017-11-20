@@ -5,13 +5,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ServisRepositoryTest {
+@TestPropertySource(locations="classpath:test.properties")
+public class ServisRepositoryITest {
 
     @Autowired
     private ServisRepository servisRepository;
@@ -26,7 +28,7 @@ public class ServisRepositoryTest {
     public void verifyRecordCanBeSaved() {
 
         Driver driver = new Driver();
-        driver.setName("Hasan Amca");
+        driver.setName("Test Driver");
         driver.setPhoneNumber("05554519960");
 
         driverRepository.save(driver);
