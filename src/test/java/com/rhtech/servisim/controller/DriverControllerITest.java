@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,7 +46,6 @@ public class DriverControllerITest
     @Test
     public void verifyDriverCanCreatedAndRetrieved() throws Exception
     {
-
         Driver driver = new Driver();
         driver.setName("Test Driver");
         driver.setPhoneNumber("05554519909");
@@ -53,27 +53,28 @@ public class DriverControllerITest
         ObjectMapper mapper = new ObjectMapper();
         String jsonDriver = mapper.writeValueAsString(driver);
 
-        MockHttpServletResponse response = mockMvc.perform(post("/driver").content(jsonDriver).contentType(MediaType.APPLICATION_JSON_UTF8))
+        MockHttpServletResponse postResponse = mockMvc.perform(post("/driver").content(jsonDriver).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse();
 
-        assertThat(response.containsHeader("location")).isTrue();
-        String locationHeader = response.getHeader("location");
+        assertThat(postResponse.containsHeader("location")).isTrue();
+        String locationHeader = postResponse.getHeader("location");
         String driverId = locationHeader.substring(locationHeader.lastIndexOf("/") + 1);
 
-        Driver retrievedDriver = driverRepository.findOne(Long.valueOf(driverId));
+        /*Driver retrievedDriver = driverRepository.findOne(Long.valueOf(driverId));
         assertThat(retrievedDriver).isNotNull();
         assertThat(retrievedDriver).isEqualToComparingOnlyGivenFields(driver, "name", "phoneNumber");
+        */
+        MockHttpServletResponse getResponse = mockMvc.perform(get("/driver/" + driverId))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
 
+        String getResponseContent = getResponse.getContentAsString();
 
-                /*.andDo((result) -> {
-            String locationHeader = result.getResponse().getHeader("location");
-            driverId = locationHeader.substring(locationHeader.lastIndexOf("/") + 1);
-        });*/
-        // .andExpect(header().string("location", "test"));
-
-        // mockMvc.perform(get("/driver/14")).andExpect(status().isNotFound());
+        Driver retrievedDriver = mapper.readValue(getResponseContent, Driver.class);
+        assertThat(retrievedDriver).isEqualToComparingOnlyGivenFields(driver, "name", "phoneNumber");
 
     }
 }

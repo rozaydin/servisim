@@ -12,7 +12,7 @@ import java.util.Set;
 @Data
 public class Driver extends Person {
 
-    @OneToMany(targetEntity = com.rhtech.servisim.model.Servis.class, cascade = CascadeType.ALL, mappedBy = "driver", fetch = FetchType.EAGER)
-    private Set<Servis> servisSet;
+    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "driver", fetch = FetchType.EAGER)
+    private Set<Servis> servisSet;*/
 
 }

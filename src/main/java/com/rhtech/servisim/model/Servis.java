@@ -20,7 +20,7 @@ public class Servis {
     private long morningHour;
     private long afternoonHour;
 
-    @OneToMany(targetEntity = com.rhtech.servisim.model.Passenger.class, cascade = CascadeType.ALL, mappedBy = "servis", fetch = FetchType.EAGER)
-    private Set<Passenger> passengerSet;
+    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "servis", fetch = FetchType.EAGER)
+    private Set<Passenger> passengerSet;*/
 
 }
