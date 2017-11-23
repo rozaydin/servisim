@@ -12,7 +12,4 @@ import java.util.Set;
 @Data
 public class Driver extends Person {
 
-    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "driver", fetch = FetchType.EAGER)
-    private Set<Servis> servisSet;*/
-
 }

@@ -24,7 +24,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestPropertySource(locations = "classpath:test.properties")
 public class PassengerRepositoryITest
 {
-
     @Autowired
     private ServisRepository servisRepository;
 
@@ -34,10 +33,13 @@ public class PassengerRepositoryITest
     @Autowired
     private PassengerRepository passengerRepository;
 
+    // servis plate number
+    private final String plateNumber = "34TM3985";
+    private final String servisName = "SiemensNarcity";
+
     @Before
     public void init()
     {
-        List<Passenger> passengerList = new ArrayList<>();
 
         Driver driver = new Driver();
         driver.setName("Test Driver");
@@ -46,14 +48,30 @@ public class PassengerRepositoryITest
         driverRepository.save(driver);
 
         Servis servis = new Servis();
+        servis.setName(servisName);
         servis.setImageUrl("url://test-url");
-        servis.setPlateNumber("34TM3985");
+        servis.setPlateNumber(plateNumber);
         servis.setMorningHour(8);
         servis.setAfternoonHour(17);
         // set servis driver
         servis.setDriver(driver);
 
         servisRepository.save(servis);
+    }
+
+    @After
+    public void cleanUp()
+    {
+        passengerRepository.deleteAll();
+        servisRepository.deleteAll();
+        driverRepository.deleteAll();
+    }
+
+    @Test
+    public void verifyPassengersInAServisCanBeRetrieved()
+    {
+        Servis servis = servisRepository.findByName(servisName);
+        List<Passenger> passengerList = new ArrayList<>();
 
         IntStream.range(0, 10).forEach((i) -> {
             Passenger passenger = new Passenger();
@@ -66,46 +84,21 @@ public class PassengerRepositoryITest
         });
 
         passengerRepository.save(passengerList);
+
+        List<Passenger> passengers = passengerRepository.findAllByServisId(servis.getId());
+        assertThat(passengers).containsAll(passengerList);
     }
-
-    @After
-    public void cleanUp()
-    {
-
-        // passengerRepository.deleteAll();
-        // servisRepository.deleteAll();
-        // driverRepository.deleteAll();
-        Iterable<Servis> servisList = servisRepository.findAll();
-        servisList.forEach((servis) -> {
-            System.out.println(servis.getName());
-        });
-
-    }
-
-   /* @Test
-    public void testStream()
-    {
-
-        int SIZE = 10;
-
-        for (int i = 0; i < SIZE; i++)
-        {
-
-            System.out.print("(" + i / SIZE + "," + i % SIZE + ")");
-
-            if (i % SIZE == 0)
-            {
-                System.out.println("");
-            }
-        }
-    }*/
 
     @Test
-    public void verifyPassengersCanBeRetrieved()
-    {
+    public void verifyPassengerWithoutServisCanBeCreated() {
 
-        System.out.println("Hello!");
+        Passenger passenger = new Passenger();
+        passenger.setPhoneNumber("05554519909");
+        passenger.setName("Rıdvan Özaydın");
+        passenger.setAttendance(Attendance.ALL_DAY_ABSENT);
 
+        passengerRepository.save(passenger);
+        Passenger retrievedPassenger = passengerRepository.findOne(passenger.getId());
+        assertThat(retrievedPassenger).isEqualToComparingFieldByFieldRecursively(passenger);
     }
-
 }

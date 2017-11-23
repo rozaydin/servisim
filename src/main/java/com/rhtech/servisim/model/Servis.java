@@ -14,13 +14,11 @@ public class Servis {
     @ManyToOne
     @JoinColumn(name="driver_id", nullable=false)
     private Driver driver;
+    @Column(unique=true)
     private String name;
     private String plateNumber;
     private String imageUrl;
     private long morningHour;
     private long afternoonHour;
-
-    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "servis", fetch = FetchType.EAGER)
-    private Set<Passenger> passengerSet;*/
 
 }
