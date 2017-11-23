@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/servisim.iml" filepath="$PROJECT_DIR$/servisim.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/servisim_intTest.iml" filepath="$PROJECT_DIR$/.idea/modules/servisim_intTest.iml" group="servisim" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/servisim_main.iml" filepath="$PROJECT_DIR$/.idea/modules/servisim_main.iml" group="servisim" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/servisim_test.iml" filepath="$PROJECT_DIR$/.idea/modules/servisim_test.iml" group="servisim" />
     </modules>

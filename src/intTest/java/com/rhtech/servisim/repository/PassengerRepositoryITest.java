@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@TestPropertySource(locations = "classpath:test.properties")
+@TestPropertySource(locations = "classpath:integration-test.properties")
 public class PassengerRepositoryITest
 {
     @Autowired

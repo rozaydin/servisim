@@ -5,6 +5,8 @@
       <profile default="true" name="Default" enabled="true" />
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="servisim_integrationTest" target="1.8" />
+      <module name="servisim_intTest" target="1.8" />
       <module name="servisim_main" target="1.8" />
       <module name="servisim_test" target="1.8" />
     </bytecodeTargetLevel>
