@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,9 +50,14 @@ public class PassengerController
         return new ResponseEntity<>(passenger, httpStatus);
     }
 
+/*    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public void doSth();*/
+
     @GetMapping(value = "/servis/{servisId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<Passenger> getPassengersOfServis(@PathVariable("servisId") Long servisId) {
         return passengerRepository.findAllByServisId(servisId);
     }
+
+
 
 }

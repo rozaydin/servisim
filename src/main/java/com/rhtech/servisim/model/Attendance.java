@@ -4,5 +4,6 @@ public enum Attendance {
 
     ALL_DAY_ABSENT,
     MORNING_ABSENT,
-    AFTERNOON_ABSENT
+    AFTERNOON_ABSENT,
+    ATTENDING
 }

@@ -74,10 +74,7 @@ public class PassengerRepositoryITest
         List<Passenger> passengerList = new ArrayList<>();
 
         IntStream.range(0, 10).forEach((i) -> {
-            Passenger passenger = new Passenger();
-            passenger.setAttendance(Attendance.ALL_DAY_ABSENT);
-            passenger.setName("Test-Passenger" + i);
-            passenger.setPhoneNumber(String.valueOf(i));
+            Passenger passenger = createPassenger("Test-Passenger" + i, String.valueOf(i), Attendance.ALL_DAY_ABSENT);
             passenger.setServis(servis);
             // store passenger
             passengerList.add(passenger);
@@ -90,15 +87,36 @@ public class PassengerRepositoryITest
     }
 
     @Test
-    public void verifyPassengerWithoutServisCanBeCreated() {
+    public void verifyPassengerWithoutServisCanBeCreated()
+    {
 
-        Passenger passenger = new Passenger();
-        passenger.setPhoneNumber("05554519909");
-        passenger.setName("Rıdvan Özaydın");
-        passenger.setAttendance(Attendance.ALL_DAY_ABSENT);
-
+        Passenger passenger = createPassenger("05554519909", "Rıdvan Özaydın", Attendance.ALL_DAY_ABSENT);
         passengerRepository.save(passenger);
         Passenger retrievedPassenger = passengerRepository.findOne(passenger.getId());
         assertThat(retrievedPassenger).isEqualToComparingFieldByFieldRecursively(passenger);
     }
+
+    @Test
+    public void verifyPassengerCanSetAttendance()
+    {
+
+        Passenger passenger = createPassenger("05554519909", "Rıdvan Özaydın", Attendance.ALL_DAY_ABSENT);
+        passengerRepository.save(passenger);
+        // coming
+        passenger.setAttendance(Attendance.ATTENDING);
+        passengerRepository.save(passenger);
+        Passenger retrievedPassenger = passengerRepository.findOne(passenger.getId());
+        assertThat(retrievedPassenger).extracting("name", "phoneNumber", "attendance")
+                .containsExactly("Rıdvan Özaydın", "05554519909", Attendance.ATTENDING);
+    }
+
+    private Passenger createPassenger(String phoneNumber, String name, Attendance attendance)
+    {
+        Passenger passenger = new Passenger();
+        passenger.setPhoneNumber(phoneNumber);
+        passenger.setName(name);
+        passenger.setAttendance(attendance);
+        return passenger;
+    }
+
 }
